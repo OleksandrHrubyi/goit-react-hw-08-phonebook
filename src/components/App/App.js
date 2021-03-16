@@ -22,14 +22,11 @@ class App extends React.Component {
   render() {
     return (
       <>
+        {" "}
         <Header />
         <Container>
           <Suspense fallback={<p>Loud...</p>}>
             <Switch>
-              <PrivatRoute component={Main} path="/contacts" exact />
-
-              <PublicRoute restricted exact path="/" component={Home} />
-
               <PublicRoute restricted exact path="/login" component={Login} />
               <PublicRoute
                 restricted
@@ -37,6 +34,9 @@ class App extends React.Component {
                 path="/registr"
                 component={Registr}
               />
+
+              <PrivatRoute component={Main} path="/contacts" exact />
+              <PublicRoute restricted path="/" component={Home} />
             </Switch>
           </Suspense>
         </Container>
