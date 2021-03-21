@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import { getTokenState } from "../../redux/Contacts/contacts-selectors";
+import { getTokenState } from "../../redux/User/userSelectors";
 
 const PublicRoute = ({
   component: Component,
@@ -10,8 +10,6 @@ const PublicRoute = ({
   ...rest
 }) => {
   return (
-    // restricted = false meaning public route
-    // restricted = true meaning restricted route
     <Route
       {...rest}
       render={(props) =>

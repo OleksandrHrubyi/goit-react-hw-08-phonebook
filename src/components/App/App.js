@@ -1,13 +1,12 @@
 import React, { Suspense } from "react";
-import Header from "../Header/Header";
-import Container from "../Container/Container";
 import { Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "../Header/Header";
+import Container from "../Container/Container";
 import PublicRoute from "../PublicRoute/PublicRoute";
 import PrivatRoute from "../PrivatRoute/PrivatRoute";
-
-import { refreshUser } from "../../redux/Contacts/contactsOperations";
+import { refreshUser } from "../../redux/User/userOperation";
 
 const Main = React.lazy(() => import("../Main/Main"));
 const Home = React.lazy(() => import("../Home/Home"));

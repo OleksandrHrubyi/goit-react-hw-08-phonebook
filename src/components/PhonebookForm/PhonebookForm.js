@@ -1,14 +1,14 @@
 import React from "react";
-import styles from "../PhonebookForm/phonebookForm.module.css";
-import "react-toastify/dist/ReactToastify.css";
-import ErrorPopup from "../ErrorPopup/ErrorPopup";
 import { CSSTransition } from "react-transition-group";
 import { connect } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
+import ErrorPopup from "../ErrorPopup/ErrorPopup";
 import {
   addContactsOperation,
   getContactsOperation,
 } from "../../redux/Contacts/contactsOperations";
-import { getAllContacts } from "../../redux/Contacts/contacts-selectors";
+import { getAllContacts } from "../../redux/Contacts/contactsSelectors";
+import styles from "../PhonebookForm/phonebookForm.module.css";
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -105,8 +105,8 @@ class PhonebookForm extends React.Component {
               onChange={this.handleChange}
             />
           </label>
-          <button className={styles.btn} type="submit">
-            add contact
+          <button type="submit" className="btn btn-success">
+            Add contact
           </button>
         </form>
         <CSSTransition

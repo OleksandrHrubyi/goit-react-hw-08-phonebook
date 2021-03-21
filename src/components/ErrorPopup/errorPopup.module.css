@@ -2,7 +2,7 @@
   position: absolute;
   top: 5%;
   right: 0;
-  min-width: 400px;
+  max-width: 400px;
   min-height: 100px;
   padding: 0px 10px;
   font-size: 10px;

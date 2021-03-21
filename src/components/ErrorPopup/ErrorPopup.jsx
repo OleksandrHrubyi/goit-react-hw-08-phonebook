@@ -1,6 +1,5 @@
 import styles from "./errorPopup.module.css";
 import PropTypes from "prop-types";
-
 function ErrorPopup({ text }) {
   return (
     <div className={styles.popup}>

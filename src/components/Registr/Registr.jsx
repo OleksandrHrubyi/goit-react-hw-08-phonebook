@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
+import { CSSTransition } from "react-transition-group";
+import { registerUser } from "../../redux/User/userOperation";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { registerUser } from "../../redux/Contacts/contactsOperations";
 import ErrorPopup from "../ErrorPopup/ErrorPopup";
-import { CSSTransition } from "react-transition-group";
 import styles from "./registr.module.css";
 
 class Registr extends React.Component {
@@ -23,7 +23,7 @@ class Registr extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-   
+
     if (this.state.name && this.state.email && this.state.password) {
       this.props.onSubmit(this.state);
       console.log(this.state);
@@ -106,10 +106,6 @@ class Registr extends React.Component {
     );
   }
 }
-
-// const mapStateToProps = (state) => ({
-
-// })
 
 const mapDispatchToProps = {
   onSubmit: registerUser,

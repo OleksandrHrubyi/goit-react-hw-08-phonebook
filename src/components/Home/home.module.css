@@ -5,9 +5,6 @@
   flex-direction: column;
 }
 
-.box {
-  width: 30%;
-}
 .nav {
   background: #007bff;
   margin-bottom: 10px;

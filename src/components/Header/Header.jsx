@@ -1,14 +1,10 @@
-import styles from "./header.module.css";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { logoutUser } from "../../redux/Contacts/contactsOperations";
+import { logoutUser } from "../../redux/User/userOperation";
+import { getTokenState, getUserName } from "../../redux/User/userSelectors";
+import styles from "./header.module.css";
 
-import {
-  getTokenState,
-  getUserName,
-} from "../../redux/Contacts/contacts-selectors";
-
-function Header({ children, token, name, onLogout }) {
+function Header({ islogin, name, onLogout }) {
   return (
     <div className={styles.header}>
       <div className={styles.container}>
@@ -16,10 +12,14 @@ function Header({ children, token, name, onLogout }) {
           Phonebook
         </NavLink>
 
-        {token ? (
+        {islogin ? (
           <div className={styles.authname}>
             <span className={styles.name}>Welcome, {name}</span>
-            <button type="button" onClick={onLogout}>
+            <button
+              type="button"
+              onClick={onLogout}
+              className="btn btn-primary"
+            >
               Logout
             </button>
           </div>
@@ -29,7 +29,9 @@ function Header({ children, token, name, onLogout }) {
               <NavLink className={styles.login} to="/login">
                 Login
               </NavLink>
-              <NavLink to="/registr">Registration</NavLink>
+              <NavLink className={styles.registration} to="/registr">
+                Registration
+              </NavLink>
             </div>
           </>
         )}
@@ -39,7 +41,7 @@ function Header({ children, token, name, onLogout }) {
 }
 
 const mapStateToProps = (state) => ({
-  token: getTokenState(state),
+  islogin: getTokenState(state),
   name: getUserName(state),
 });
 

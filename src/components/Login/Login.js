@@ -1,13 +1,12 @@
 import React from "react";
-import ErrorPopup from "../ErrorPopup/ErrorPopup";
 import { CSSTransition } from "react-transition-group";
 import { connect } from "react-redux";
-import { loginUser } from "../../redux/Contacts/contactsOperations";
-import styles from "./login.module.css";
-import { getErrorMessage } from "../../redux/Contacts/contacts-selectors";
-
+import { loginUser } from "../../redux/User/userOperation";
+import { getErrorMessage } from "../../redux/User/userSelectors";
+import ErrorPopup from "../ErrorPopup/ErrorPopup";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import styles from "./login.module.css";
 
 class Login extends React.Component {
   state = {
@@ -57,7 +56,7 @@ class Login extends React.Component {
   render() {
     const { email, error, password } = this.state;
     return (
-      <Form className ={styles.form} onSubmit={this.handleSubmit}>
+      <Form className={styles.form} onSubmit={this.handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Login</Form.Label>
           <Form.Control

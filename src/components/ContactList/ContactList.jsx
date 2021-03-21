@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import styles from "../ContactList/contactList.module.css";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { connect } from "react-redux";
 import { deleteContactOperation } from "../../redux/Contacts/contactsOperations";
-import { getVisibleContacts } from "../../redux/Contacts/contacts-selectors";
+import { getVisibleContacts } from "../../redux/Contacts/contactsSelectors";
 
 function Card({ arr, onDel }) {
   return (
@@ -13,12 +13,12 @@ function Card({ arr, onDel }) {
           return (
             <CSSTransition key={id} timeout={3000} classNames={styles}>
               <li className={styles.item}>
-                <h3 className={styles.name}>{name} : </h3>
-                <a className={styles.number} href={number}>
+                <h3 className={styles.name}>{name} </h3>
+                <a className={styles.number} href="tel:{number}">
                   {number}
                 </a>
                 <button
-                  className={styles.btn}
+                  className="btn btn-outline-danger"
                   onClick={() => {
                     onDel(id);
                   }}

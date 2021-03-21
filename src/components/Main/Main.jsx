@@ -1,11 +1,11 @@
+import PropTypes from "prop-types";
 import { CSSTransition } from "react-transition-group";
 import { connect } from "react-redux";
 import PhonebookForm from "../PhonebookForm/PhonebookForm";
 import ContactList from "../ContactList/ContactList";
 import Filter from "../Filter/Filter";
-
 import filterStyles from "./main.module.css";
-import { getAllContacts } from "../../redux/Contacts/contacts-selectors";
+import { getAllContacts } from "../../redux/Contacts/contactsSelectors";
 
 function Main({ contacts }) {
   return (
@@ -29,6 +29,11 @@ function Main({ contacts }) {
     </>
   );
 }
+
+Main.propTypes = {
+  contacts: PropTypes.array,
+};
+
 const mapStateToProps = (state) => ({
   contacts: getAllContacts(state),
 });
