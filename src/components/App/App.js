@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,35 +13,27 @@ const Home = React.lazy(() => import("../Home/Home"));
 const Login = React.lazy(() => import("../Login/Login"));
 const Registr = React.lazy(() => import("../Registr/Registr"));
 
-class App extends React.Component {
-  componentDidMount() {
-    this.props.onRefreshUser();
-  }
+function App({ onRefreshUser }) {
+  useEffect(() => {
+    onRefreshUser();
+  }, [onRefreshUser]);
 
-  render() {
-    return (
-      <>
-        {" "}
-        <Header />
-        <Container>
-          <Suspense fallback={<p>Loud...</p>}>
-            <Switch>
-              <PublicRoute restricted exact path="/login" component={Login} />
-              <PublicRoute
-                restricted
-                exact
-                path="/registr"
-                component={Registr}
-              />
-
-              <PrivatRoute component={Main} path="/contacts" exact />
-              <PublicRoute restricted path="/" component={Home} />
-            </Switch>
-          </Suspense>
-        </Container>
-      </>
-    );
-  }
+  return (
+    <>
+      {" "}
+      <Header />
+      <Container>
+        <Suspense fallback={<p>Loud...</p>}>
+          <Switch>
+            <PublicRoute restricted exact path="/login" component={Login} />
+            <PublicRoute restricted exact path="/registr" component={Registr} />
+            <PrivatRoute component={Main} path="/contacts" exact />
+            <PublicRoute restricted path="/" component={Home} />
+          </Switch>
+        </Suspense>
+      </Container>
+    </>
+  );
 }
 
 const mapDispatchToProps = {

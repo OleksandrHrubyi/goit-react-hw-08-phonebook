@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 import { registerUser } from "../../redux/User/userOperation";
@@ -7,104 +7,101 @@ import Button from "react-bootstrap/Button";
 import ErrorPopup from "../ErrorPopup/ErrorPopup";
 import styles from "./registr.module.css";
 
-class Registr extends React.Component {
-  state = {
-    name: "",
-    email: "",
-    password: "",
-    error: false,
-  };
+function Registr({ onSubmit }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
-  handleChange = (event) => {
-    this.setState({
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (this.state.name && this.state.email && this.state.password) {
-      this.props.onSubmit(this.state);
-      console.log(this.state);
-      this.reset();
-      return;
-    }
-    this.errorPopup(2000);
-  };
-
-  errorPopup = (time) => {
-    this.setState({
-      error: true,
-    });
+  const errorPopup = (time) => {
+    setError(true);
     setTimeout(() => {
-      this.setState({
-        error: false,
-      });
+      setError(false);
     }, time);
   };
 
-  reset = () => {
-    this.setState({
-      name: "",
-      email: "",
-      password: "",
-    });
+  const reset = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
-  render() {
-    const { name, email, password, error } = this.state;
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Group controlId="formBasicName">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            value={name}
-            onChange={this.handleChange}
-            placeholder="Enter your name"
-          />
-        </Form.Group>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-            placeholder="Enter email"
-          />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "name":
+        setName(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      default:
+        console.log("No such type of data");
+    }
+  };
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-            placeholder="Password"
-          />
-        </Form.Group>
-        <CSSTransition
-          in={error}
-          unmountOnExit
-          timeout={3000}
-          classNames={styles}
-        >
-          <ErrorPopup text="Please enter name, email, password!" />
-        </CSSTransition>
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (name && email && password) {
+      onSubmit({ name, email, password });
+      reset();
+      return;
+    }
+    errorPopup(2000);
+  };
 
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-    );
-  }
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="formBasicName">
+        <Form.Label>Name</Form.Label>
+        <Form.Control
+          type="text"
+          name="name"
+          value={name}
+          onChange={handleChange}
+          placeholder="Enter your name"
+        />
+      </Form.Group>
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label>Email address</Form.Label>
+        <Form.Control
+          type="email"
+          name="email"
+          value={email}
+          onChange={handleChange}
+          placeholder="Enter email"
+        />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
+      </Form.Group>
+      <Form.Group controlId="formBasicPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          name="password"
+          value={password}
+          onChange={handleChange}
+          placeholder="Password"
+        />
+      </Form.Group>
+      <CSSTransition
+        in={error}
+        unmountOnExit
+        timeout={3000}
+        classNames={styles}
+      >
+        <ErrorPopup text="Please enter name, email, password!" />
+      </CSSTransition>
+
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+    </Form>
+  );
 }
 
 const mapDispatchToProps = {

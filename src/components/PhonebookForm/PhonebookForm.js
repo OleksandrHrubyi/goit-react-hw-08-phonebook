@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
 import { connect } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,133 +10,127 @@ import {
 import { getAllContacts } from "../../redux/Contacts/contactsSelectors";
 import styles from "../PhonebookForm/phonebookForm.module.css";
 
-const { v4: uuidv4 } = require("uuid");
+function PhonebookForm({ getContacts, onSubmit, sameContact }) {
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [errorSameName, setErrorSameName] = useState(false);
+  const [errorName, setErrorName] = useState(false);
+  const [errorNumber, setErrorNumber] = useState(false);
 
-class PhonebookForm extends React.Component {
-  state = {
-    name: "",
-    number: "",
-    errorSameName: false,
-    errorName: false,
-    errorNumber: false,
+  useEffect(() => {
+    getContacts();
+  }, [getContacts]);
+
+  const reset = () => {
+    setName("");
+    setNumber("");
   };
 
-  nameInputId = uuidv4();
-  numberInputId = uuidv4();
-
-  componentDidMount() {
-    this.props.getContacts();
-  }
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (this.state.name.length === 0) {
-      this.setState({ errorName: true });
+    if (name.length === 0) {
+      setErrorName(true);
       setTimeout(() => {
-        this.setState({ errorName: false });
+        setErrorName(false);
       }, 3000);
       return;
     }
 
-    if (this.state.number.length === 0) {
-      this.setState({ errorNumber: true });
+    if (number.length === 0) {
+      setErrorNumber(true);
       setTimeout(() => {
-        this.setState({ errorNumber: false });
+        setErrorNumber(false);
       }, 3000);
       return;
     }
 
-    const result = this.props.sameContact.find(
-      (el) => el.name === this.state.name
-    );
+    const result = sameContact.find((el) => el.name === name);
 
     if (result) {
-      this.setState({ errorSameName: true });
+      setErrorSameName(true);
       setTimeout(() => {
-        this.setState({ errorSameName: false });
+        setErrorSameName(false);
       }, 3000);
       return;
     }
 
-    this.props.onSubmit(this.state);
-    return this.reset();
+    onSubmit({ name, number });
+    return reset();
   };
 
-  reset = () => {
-    this.setState({
-      name: "",
-      number: "",
-    });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "name":
+        setName(value);
+        break;
+      case "number":
+        setNumber(value);
+        break;
+
+      default:
+        console.log("No such type of data");
+    }
   };
 
-  handleChange = (event) => {
-    this.setState({
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
-  };
+  return (
+    <div className={styles.container}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <label className={styles.label}>
+          {" "}
+          <span className={styles.name}>Name</span>
+          <input
+            className={styles.input}
+            name="name"
+            type="text"
+            value={name}
+            placeholder="enter name"
+            onChange={handleChange}
+          />
+        </label>
+        <label className={styles.label}>
+          {" "}
+          <span className={styles.number}>Number</span>
+          <input
+            className={styles.input}
+            name="number"
+            type="number"
+            value={number}
+            placeholder="enter number"
+            onChange={handleChange}
+          />
+        </label>
+        <button type="submit" className="btn btn-success">
+          Add contact
+        </button>
+      </form>
+      <CSSTransition
+        in={errorName}
+        unmountOnExit
+        timeout={3000}
+        classNames={styles}
+      >
+        <ErrorPopup text="Please enter name" />
+      </CSSTransition>
+      <CSSTransition
+        in={errorNumber}
+        unmountOnExit
+        timeout={3000}
+        classNames={styles}
+      >
+        <ErrorPopup text="Please enter number" />
+      </CSSTransition>
 
-  render() {
-    const { name, number } = this.state;
-
-    return (
-      <div className={styles.container}>
-        <form className={styles.form} onSubmit={this.handleSubmit}>
-          <label className={styles.label}>
-            {" "}
-            <span className={styles.name}>Name</span>
-            <input
-              className={styles.input}
-              name="name"
-              type="text"
-              value={name}
-              placeholder="enter name"
-              onChange={this.handleChange}
-            />
-          </label>
-          <label className={styles.label}>
-            {" "}
-            <span className={styles.number}>Number</span>
-            <input
-              className={styles.input}
-              name="number"
-              type="number"
-              value={number}
-              placeholder="enter number"
-              onChange={this.handleChange}
-            />
-          </label>
-          <button type="submit" className="btn btn-success">
-            Add contact
-          </button>
-        </form>
-        <CSSTransition
-          in={this.state.errorName}
-          unmountOnExit
-          timeout={3000}
-          classNames={styles}
-        >
-          <ErrorPopup text="Please enter name" />
-        </CSSTransition>
-        <CSSTransition
-          in={this.state.errorNumber}
-          unmountOnExit
-          timeout={3000}
-          classNames={styles}
-        >
-          <ErrorPopup text="Please enter number" />
-        </CSSTransition>
-
-        <CSSTransition
-          in={this.state.errorSameName}
-          timeout={250}
-          classNames={styles}
-          unmountOnExit
-        >
-          <ErrorPopup text="this contact already exists " />
-        </CSSTransition>
-      </div>
-    );
-  }
+      <CSSTransition
+        in={errorSameName}
+        timeout={250}
+        classNames={styles}
+        unmountOnExit
+      >
+        <ErrorPopup text="this contact already exists " />
+      </CSSTransition>
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => ({

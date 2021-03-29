@@ -11,7 +11,6 @@ function Main({ contacts }) {
   return (
     <>
       <PhonebookForm />
-
       <CSSTransition
         in={contacts.length > 0}
         classNames={filterStyles}
@@ -24,7 +23,6 @@ function Main({ contacts }) {
           <Filter />
         </div>
       </CSSTransition>
-
       <ContactList />
     </>
   );
